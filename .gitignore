@@ -1,0 +1,25 @@
+# Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Editor directories
+.idea/
+.vscode/
+
+# Environment overrides
+.env
+*.env
+
+# Local LLex documents
+*.llex

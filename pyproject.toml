@@ -1,0 +1,24 @@
+[project]
+name = "llex"
+version = "0.1.0"
+description = "LLex (Local Language Expression Engine) is a Python-native word processor shell that blends layout, formatting, and LLM-assisted writing cues."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [ { name = "Savant Pseudoist" } ]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.urls]
+"Repository" = "https://github.com/savantpseudoist/llex"
+"Documentation" = "https://github.com/savantpseudoist/llex#readme"
+
+[project.scripts]
+llex = "llex.main:main"
+
+[tool.setuptools.packages.find]
+where = ["llex"]
+exclude = ["tests*", "dev_docs"]
+
+[build-system]
+requires = ["setuptools>=65.5.1", "wheel"]
+build-backend = "setuptools.build_meta"
