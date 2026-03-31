@@ -17,6 +17,7 @@ from PyQt6.QtCore import Qt
 
 from .document import Document
 from .llm import LocalLLMBridge
+from .export import DocumentExporter
 
 
 class EditorApp:
@@ -67,6 +68,9 @@ class EditorApp:
 
         self.action_save = QAction("Save", self.main_window)
         self.action_save.setShortcut(QKeySequence.StandardKey.Save)
+
+        self.action_export = QAction("Export As...", self.main_window)
+        self.action_export.triggered.connect(self._handle_export)
 
         # --- Formatting Actions ---
         self.action_bold = QAction("Bold", self.main_window)
@@ -133,6 +137,8 @@ class EditorApp:
         file_menu.addAction(self.action_new)
         file_menu.addAction(self.action_open)
         file_menu.addAction(self.action_save)
+        file_menu.addSeparator()
+        file_menu.addAction(self.action_export)
         
         # Format menu
         format_menu = menu_bar.addMenu("Format")
@@ -279,6 +285,28 @@ class EditorApp:
 
     def _handle_llm_rewrite(self) -> None:
         pass
+
+    def _handle_export(self) -> None:
+        filters = (
+            "Microsoft Word (*.docx);;"
+            "PDF Document (*.pdf);;"
+            "OpenDocument (*.odt);;"
+            "Rich Text Format (*.rtf);;"
+            "Web Page Zipped (*.zip);;"
+            "EPUB Publication (*.epub);;"
+            "Markdown (*.md);;"
+            "Plain Text (*.txt)"
+        )
+        filepath, _ = QFileDialog.getSaveFileName(self.main_window, "Export Document", "", filters)
+        if not filepath:
+            return
+            
+        exporter = DocumentExporter(self.text_widget.document())
+        try:
+            exporter.export(filepath)
+            QMessageBox.information(self.main_window, "Export Successful", f"Successfully exported to {filepath}")
+        except Exception as e:
+            QMessageBox.critical(self.main_window, "Export Error", f"An error occurred during export:\n{e}")
 
     def run(self) -> None:
         self.main_window.show()
