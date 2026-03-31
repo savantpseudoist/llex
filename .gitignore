@@ -23,3 +23,7 @@ env/
 
 # Local LLex documents
 *.llex
+
+
+# docs
+dev_docs\software_engineering_journal.md
