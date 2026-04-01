@@ -12,6 +12,7 @@ dist/
 .venv/
 venv/
 env/
+myenv/
 
 # Editor directories
 .idea/
@@ -26,4 +27,4 @@ env/
 
 
 # docs
-dev_docs\software_engineering_journal.md
+dev_docs/
