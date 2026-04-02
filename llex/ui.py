@@ -5,12 +5,13 @@ from pathlib import Path
 from typing import Optional
 
 from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QTextEdit, QVBoxLayout, QWidget,
-    QMenuBar, QToolBar, QStatusBar, QFileDialog, QMessageBox, QInputDialog,
-    QHBoxLayout, QFontComboBox, QComboBox, QLabel, QColorDialog, QScrollBar,
+    QApplication, QMainWindow, QTextEdit, QVBoxLayout, QWidget, QMenu,
+    QMenuBar, QToolBar, QStatusBar, QFileDialog, QMessageBox, QInputDialog,     
+    QHBoxLayout, QFontComboBox, QComboBox, QLabel, QColorDialog, QScrollBar,    
     QPushButton, QSizePolicy, QToolButton, QFrame, QLayout
 )
 from PyQt6.QtGui import (
+    QPainter, QPen, QBrush,
     QFont, QAction, QColor, QTextCharFormat, QTextCursor, QKeySequence,
     QIcon, QTextBlockFormat
 )
@@ -19,6 +20,10 @@ from PyQt6.QtCore import Qt
 from .document import Document
 from .llm import LocalLLMBridge
 from .export import DocumentExporter
+from .pagination import PagedEditorContainer
+
+
+
 
 
 class EditorApp:
@@ -111,6 +116,14 @@ class EditorApp:
         # --- View/Settings Actions ---
         self.action_theme = QAction("Toggle Paper Theme", self.main_window)
         self.action_theme.setShortcut(QKeySequence("F5"))
+        self.action_header_footer = QAction("Headers & Footers", self.main_window)
+        self.action_header_footer.triggered.connect(self._edit_header_footer)
+        self.action_page_orientation = QAction("Page Orientation", self.main_window)
+        self.action_page_orientation.triggered.connect(self._toggle_orientation)
+        self.action_header_footer = QAction("Headers & Footers", self.main_window)
+        self.action_header_footer.triggered.connect(self._edit_header_footer)
+        self.action_page_orientation = QAction("Page Orientation", self.main_window)
+        self.action_page_orientation.triggered.connect(self._toggle_orientation)
         self.action_theme.triggered.connect(self._toggle_theme)
 
         self.action_toggle_sidebar = QAction("◨ Copilot", self.main_window)
@@ -167,10 +180,8 @@ class EditorApp:
         
         self.sidebar_widget.hide()
 
-        self.text_widget = QTextEdit()
-        # Visual HCI mapping: Make the editor look like a piece of paper
-        self.text_widget.setFixedWidth(816)  # Standard 8.5" page width at 96 DPI
-        
+        self.text_widget = PagedEditorContainer()
+        # Visual HCI mapping: Make the editor look like a piece of paper        
         self.is_dark_paper = True
         self._apply_paper_theme()
         
@@ -194,19 +205,54 @@ class EditorApp:
         
         self.layout.addWidget(self.editor_container)
 
+    def _toggle_bullet_list(self) -> None:
+        cursor = self.text_widget.textCursor()
+        if cursor.currentList():
+            pass
+        else:
+            from PyQt6.QtGui import QTextListFormat
+            list_fmt = QTextListFormat()
+            list_fmt.setStyle(QTextListFormat.Style.ListDisc)
+            cursor.createList(list_fmt)
+
+    def _apply_numbering(self, action) -> None:
+        from PyQt6.QtGui import QTextListFormat, QTextBlockFormat
+        text = action.text()
+        style_map = {
+            "None": None,
+            "1.": QTextListFormat.Style.ListDecimal,
+            "1)": QTextListFormat.Style.ListDecimal,
+            "I.": QTextListFormat.Style.ListUpperRoman,
+            "A.": QTextListFormat.Style.ListUpperAlpha,
+            "a)": QTextListFormat.Style.ListLowerAlpha,
+            "a.": QTextListFormat.Style.ListLowerAlpha,
+            "i.": QTextListFormat.Style.ListLowerRoman,
+        }
+        cursor = self.text_widget.textCursor()
+        style = style_map.get(text)
+        if style is None:
+            new_fmt = QTextBlockFormat()
+            cursor.setBlockFormat(new_fmt)
+        else:
+            list_fmt = QTextListFormat()
+            list_fmt.setStyle(style)
+            list_fmt.setNumberSuffix(")" if ")" in text else ".")
+            cursor.createList(list_fmt)
+
     def _apply_paper_theme(self) -> None:
         bg = "#2b2b2b" if self.is_dark_paper else "white"
         fg = "#ffffff" if self.is_dark_paper else "black"
         border = "#444444" if self.is_dark_paper else "#d3d3d3"
-        self.text_widget.setStyleSheet(f"""
-            QTextEdit {{
-                background-color: {bg};
-                color: {fg};
-                border: 1px solid {border};
-                border-radius: 2px;
-                padding: 40px;
-            }}
-        """)
+        for page in self.text_widget.pages:
+            page.editor.setStyleSheet(f"""
+                QTextEdit {{
+                    background-color: {bg};
+                    color: {fg};
+                    border: 1px solid {border};
+                    border-radius: 2px;
+                    padding: 0px;
+                }}
+            """)
 
     def _toggle_theme(self) -> None:
         self.is_dark_paper = not getattr(self, 'is_dark_paper', True)
@@ -278,6 +324,9 @@ class EditorApp:
         
         # Format menu
         format_menu = menu_bar.addMenu("Format")
+        format_menu.addAction(self.action_header_footer)
+        format_menu.addAction(self.action_page_orientation)
+        format_menu.addSeparator()
         format_menu.addAction(self.action_bold)
         format_menu.addAction(self.action_italic)
         format_menu.addAction(self.action_underline)
@@ -392,14 +441,25 @@ class EditorApp:
         para_layout.setContentsMargins(0, 0, 0, 0)
         para_layout.setSpacing(2)
         p_row1 = QHBoxLayout(); p_row1.setSpacing(2); p_row1.setContentsMargins(0, 0, 0, 0)
-        for t in ["•", "1.", "↤", "↦", "A↓", "¶"]:
-            b = QToolButton(); b.setText(t); p_row1.addWidget(b)
+        
+        self.btn_bullet = QToolButton()
+        self.btn_bullet.setText("•")
+        self.btn_bullet.clicked.connect(self._toggle_bullet_list)
+        p_row1.addWidget(self.btn_bullet)
+        
+        self.btn_numbering = QToolButton()
+        self.btn_numbering.setText("1.")
+        self.btn_numbering.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
+        num_menu = QMenu(self.btn_numbering)
+        for style_name in ["None", "1.", "1)", "I.", "A.", "a)", "a.", "i."]:
+            action = num_menu.addAction(style_name)
+            action.triggered.connect(lambda checked, s=style_name: self._apply_numbering_style(s))
+        self.btn_numbering.setMenu(num_menu)
+        p_row1.addWidget(self.btn_numbering)
 
         p_row2 = QHBoxLayout(); p_row2.setSpacing(2); p_row2.setContentsMargins(0, 0, 0, 0)
-        for action, t in zip([self.action_align_left, self.action_align_center, self.action_align_right], ["≡", "≡", "≡"]):
+        for action, t in zip([self.action_align_left, self.action_align_center, self.action_align_right], ["Left", "Center", "Right"]):
             b = QToolButton(); b.setDefaultAction(action); b.setText(t); p_row2.addWidget(b)
-        for t in ["≡", "↕", "▤", "⊞"]:
-            b = QToolButton(); b.setText(t); p_row2.addWidget(b)
 
         para_layout.addLayout(p_row1)
         para_layout.addLayout(p_row2)
@@ -605,6 +665,29 @@ class EditorApp:
 
     def _handle_llm_rewrite(self) -> None:
         pass
+
+    def _edit_header_footer(self) -> None:
+        h, ok = QInputDialog.getText(self.main_window, "Header", "Enter Header Text (Use <Page Num>):", text=self.text_widget.header_text)
+        if ok:
+            self.text_widget.header_text = h
+        f, ok = QInputDialog.getText(self.main_window, "Footer", "Enter Footer Text (Use <Page Num>):", text=self.text_widget.footer_text)
+        if ok:
+            self.text_widget.footer_text = f
+        self.text_widget._update_page_headers_footers()
+
+    def _toggle_orientation(self) -> None:
+        if self.text_widget.page_width == 816:
+            self.text_widget.page_width = 1056
+            self.text_widget.page_height = 816
+        else:
+            self.text_widget.page_width = 816
+            self.text_widget.page_height = 1056
+        # Update all pages with new dimensions
+        for page in self.text_widget.pages:
+            page.page_width = self.text_widget.page_width
+            page.page_height = self.text_widget.page_height
+            page.setFixedWidth(self.text_widget.page_width)
+            page.setFixedHeight(self.text_widget.page_height)
 
     def _handle_export(self) -> None:
         filters = (
