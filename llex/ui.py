@@ -20,11 +20,40 @@ from PyQt6.QtCore import Qt
 from .document import Document
 from .llm import LocalLLMBridge
 from .export import DocumentExporter
-from .pagination import PagedEditorContainer
 
 
 
 
+
+
+from PyQt6.QtCore import Qt, QSizeF
+class DraftEditor(QTextEdit):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.page_width = 816
+        self.page_height = 1056
+        self.document().setPageSize(QSizeF(self.page_width, self.page_height))
+        self.setFixedWidth(self.page_width)
+
+    def paintEvent(self, event):
+        super().paintEvent(event)
+        from PyQt6.QtGui import QPainter, QPen, QColor
+        from PyQt6.QtCore import Qt
+        painter = QPainter(self.viewport())
+        line_pen = QPen(QColor(150, 150, 150))
+        line_pen.setStyle(Qt.PenStyle.DashLine)
+        line_pen.setWidth(1)
+        painter.setPen(line_pen)
+
+        offset = self.verticalScrollBar().value()
+        viewport_height = self.viewport().height()
+
+        start_page = int(offset // self.page_height)
+        end_page = int((offset + viewport_height) // self.page_height)
+
+        for i in range(start_page + 1, end_page + 2):
+            y = int(i * self.page_height - offset)
+            painter.drawLine(0, y, self.viewport().width(), y)
 
 class EditorApp:
     """PyQt6-based editor window that ties Document + LLM services together."""
@@ -180,7 +209,7 @@ class EditorApp:
         
         self.sidebar_widget.hide()
 
-        self.text_widget = PagedEditorContainer()
+        self.text_widget = DraftEditor()
         # Visual HCI mapping: Make the editor look like a piece of paper        
         self.is_dark_paper = True
         self._apply_paper_theme()
@@ -243,16 +272,15 @@ class EditorApp:
         bg = "#2b2b2b" if self.is_dark_paper else "white"
         fg = "#ffffff" if self.is_dark_paper else "black"
         border = "#444444" if self.is_dark_paper else "#d3d3d3"
-        for page in self.text_widget.pages:
-            page.editor.setStyleSheet(f"""
-                QTextEdit {{
-                    background-color: {bg};
-                    color: {fg};
-                    border: 1px solid {border};
-                    border-radius: 2px;
-                    padding: 0px;
-                }}
-            """)
+        self.text_widget.setStyleSheet(f"""
+            QTextEdit {{
+                background-color: {bg};
+                color: {fg};
+                border: 1px solid {border};
+                border-radius: 2px;
+                padding: 40px;
+            }}
+        """)
 
     def _toggle_theme(self) -> None:
         self.is_dark_paper = not getattr(self, 'is_dark_paper', True)
