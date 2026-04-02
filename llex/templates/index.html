@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LLex</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div id="app">
+        <header id="ribbon">
+            <div class="toolbar">
+                <button id="btn-bold"><b>B</b></button>
+                <button id="btn-italic"><i>I</i></button>
+                <button id="btn-underline"><u>U</u></button>
+                <span class="separator"></span>
+                <button id="btn-h1">H1</button>
+                <button id="btn-h2">H2</button>
+                <button id="btn-h3">H3</button>
+                <span class="separator"></span>
+                <button id="btn-bullet">Bullet</button>
+                <button id="btn-number">Number</button>
+            </div>
+        </header>
+
+        <div id="main-content">
+            <div id="editor-container">
+                <div id="editor"></div>
+            </div>
+            
+            <aside id="sidebar">
+                <h3>LLM Assistant</h3>
+                <button id="btn-summarize">Summarize Selection</button>
+                <button id="btn-rewrite">Rewrite Selection</button>
+                <div style="flex-grow: 1;"></div>
+                <label>Ask Copilot:</label>
+                <textarea id="llm-prompt" placeholder="Ask LLM to edit or generate text..."></textarea>
+                <button id="btn-ask">Submit Prompt</button>
+            </aside>
+        </div>
+
+        <footer id="status-bar">
+            Ready
+        </footer>
+    </div>
+    
+    <!-- Load TipTap -> Use UMD/ESM or CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tiptap/core@2.0.3/dist/index.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tiptap/starter-kit@2.0.3/dist/index.umd.js"></script>
+    <script src="/static/editor.js"></script>
+</body>
+</html>
