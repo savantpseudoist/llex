@@ -29,3 +29,7 @@ myenv/
 # docs
 dev_docs/
 inspirations/
+
+
+llex/static/vendor
+node_modules/
