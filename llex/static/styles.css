@@ -1,0 +1,317 @@
+:root {
+    --bg-dark: #1e1e1e;
+    --paper-bg: white;
+    --ribbon-bg: #2b2b2b;
+    --text-color: black;
+    --border-color: #444;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Menu Bar */
+#menu-bar {
+    background-color: #2b2b2b;
+    display: flex;
+    padding: 0 8px;
+    font-size: 13px;
+    user-select: none;
+    z-index: 1000;
+}
+
+.menu-item {
+    position: relative;
+}
+
+.menu-title {
+    color: #cccccc;
+    padding: 6px 10px;
+    display: block;
+    cursor: default;
+    border-radius: 4px;
+}
+
+.menu-item:hover .menu-title {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #252526;
+    border: 1px solid #444;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    min-width: 220px;
+    padding: 4px 0;
+    z-index: 1001;
+}
+
+.menu-item:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-item {
+    color: #cccccc;
+    padding: 6px 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-item:hover {
+    background-color: #0e639c;
+    color: white;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background-color: #444;
+    margin: 4px 0;
+}
+
+.nested-dropdown {
+    position: relative;
+}
+
+.nested-menu {
+    display: none;
+    position: absolute;
+    top: -5px;
+    left: 100%;
+    background-color: #252526;
+    border: 1px solid #444;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    min-width: 200px;
+    padding: 4px 0;
+}
+
+.nested-dropdown:hover .nested-menu {
+    display: block;
+}
+
+.arrow {
+    font-size: 10px;
+    color: #888;
+}
+.dropdown-item:hover .arrow {
+    color: white;
+}
+
+/* Ribbon */
+#ribbon {
+    background-color: var(--ribbon-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
+.toolbar {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.toolbar-group {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 4px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.btn {
+    background: transparent;
+    color: #e0e0e0;
+    border: 1px solid transparent;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(1px);
+}
+
+.btn.active {
+    background: rgba(14, 99, 156, 0.4);
+    color: #fff;
+    border-color: rgba(14, 99, 156, 0.8);
+}
+
+.btn.btn-primary {
+    background-color: #0e639c;
+    color: white;
+    border: 1px solid #1177bb;
+}
+
+.btn.btn-primary:hover {
+    background-color: #1177bb;
+}
+
+.icon-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    font-size: 15px;
+}
+
+.text-btn {
+    padding: 4px 8px;
+    font-weight: 500;
+}
+
+.dropdown {
+    background: #333;
+    color: #e0e0e0;
+    border: 1px solid #555;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+    height: 30px;
+}
+
+.dropdown:hover {
+    border-color: #777;
+}
+
+.dropdown:focus {
+    border-color: #0e639c;
+}
+
+.separator {
+    width: 1px;
+    height: 20px;
+    background: var(--border-color);
+    margin: 0 6px;
+}
+
+/* Main Content */
+#main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Editor Scroll Container */
+.editor-scroll-container {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #f0f0f0;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+/* 8.5 x 11 Paper aspect ratio and pagination style */
+.tiptap {
+    width: 816px;
+    min-height: 1056px;
+    background-color: var(--paper-bg);
+    color: var(--text-color);
+    padding: 96px; /* 1 inch margins approx */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.tiptap p { margin-top: 0; }
+
+/* Let's simulate page breaks visually with CSS */
+/* We will do draft view mode or continuous page drops via CSS */
+@media print {
+    body { background: none; }
+}
+
+/* Sidebar */
+#sidebar {
+    width: 0;
+    overflow: hidden;
+    background-color: #252526;
+    border-left: none;
+    color: #ccc;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: width 0.3s ease, padding 0.3s ease;
+}
+
+#sidebar.open {
+    width: 280px;
+    padding: 16px;
+    border-left: 1px solid var(--border-color);
+}
+
+#sidebar h3 { margin-top: 0; color: white; white-space: nowrap; }
+
+#sidebar button {
+    background: #3a3d41;
+    color: white;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+#sidebar button:hover { background: #505357; }
+#btn-ask { background: #0e639c !important; }
+
+#sidebar textarea {
+    background: #1e1e1e;
+    color: white;
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+/* Status Bar */
+#status-bar {
+    background-color: #007acc;
+    color: white;
+    padding: 4px 12px;
+    font-size: 12px;
+}

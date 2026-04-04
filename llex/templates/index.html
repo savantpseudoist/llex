@@ -4,36 +4,139 @@
     <meta charset="UTF-8">
     <title>LLex</title>
     <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/mini-toolbar.css">
 </head>
 <body>
     <div id="app">
+        <nav id="menu-bar">
+            <div class="menu-item dropdown-container">
+                <span class="menu-title">File</span>
+                <div class="dropdown-menu">
+                    <div class="dropdown-item">New</div>
+                    <div class="dropdown-item">Open</div>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item" id="menu-save">Save</div>
+                    <div class="dropdown-item" id="menu-save-as">Save As</div>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item nested-dropdown">
+                        <span>Download</span> <span class="arrow">▶</span>
+                        <div class="nested-menu">
+                            <div class="dropdown-item" data-export="docx">Microsoft Word (.docx)</div>
+                            <div class="dropdown-item" data-export="pdf">PDF Document (.pdf)</div>
+                            <div class="dropdown-item" data-export="odt">OpenDocument Format (.odt)</div>
+                            <div class="dropdown-item" data-export="txt">Plain Text (.txt)</div>
+                            <div class="dropdown-item" data-export="rtf">Rich Text Format (.rtf)</div>
+                            <div class="dropdown-item" data-export="html">Web Page (.html, zipped)</div>
+                            <div class="dropdown-item" data-export="epub">EPUB Publication (.epub)</div>
+                            <div class="dropdown-item" data-export="md">Markdown (.md)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item dropdown-container">
+                <span class="menu-title">Edit</span>
+                <div class="dropdown-menu">
+                    <div class="dropdown-item" id="menu-settings">Settings</div>
+                </div>
+            </div>
+            <div class="menu-item dropdown-container">
+                <span class="menu-title">View</span>
+            </div>
+        </nav>
         <header id="ribbon">
             <div class="toolbar">
-                <button id="btn-bold"><b>B</b></button>
-                <button id="btn-italic"><i>I</i></button>
-                <button id="btn-underline"><u>U</u></button>
+                <div class="toolbar-group">
+                    <button id="btn-undo" class="btn icon-btn" title="Undo (Ctrl+Z)">&#x21B6;</button>
+                    <button id="btn-redo" class="btn icon-btn" title="Redo (Ctrl+Y)">&#x21B7;</button>
+                </div>
                 <span class="separator"></span>
-                <button id="btn-h1">H1</button>
-                <button id="btn-h2">H2</button>
-                <button id="btn-h3">H3</button>
+                <div class="toolbar-group">
+
+                    <select id="font-family" class="dropdown" title="Font">
+                        <option value="Arial">Arial</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Palatino">Palatino</option>
+                        <option value="Garamond">Garamond</option>
+                        <option value="Bookman">Bookman</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                        <option value="Trebuchet MS">Trebuchet MS</option>
+                        <option value="Arial Black">Arial Black</option>
+                        <option value="Impact">Impact</option>
+                        <option value="Tahoma">Tahoma</option>
+                        <option value="Geneva">Geneva</option>
+                        <option value="Century Gothic">Century Gothic</option>
+                        <option value="Lucida Grande">Lucida Grande</option>
+                        <option value="Optima">Optima</option>
+                        <option value="Segoe UI">Segoe UI</option>
+                        <option value="Calibri">Calibri</option>
+                    </select>
+                    <select id="font-size" class="dropdown" title="Font Size">
+                        <option value="8pt">8</option>
+                        <option value="10pt">10</option>
+                        <option value="11pt">11</option>
+                        <option value="12pt" selected>12</option>
+                        <option value="14pt">14</option>
+                        <option value="18pt">18</option>
+                        <option value="24pt">24</option>
+                        <option value="36pt">36</option>
+                    </select>
+                </div>
                 <span class="separator"></span>
-                <button id="btn-bullet">Bullet</button>
-                <button id="btn-number">Number</button>
+                <div class="toolbar-group">
+                    <button id="btn-bold" class="btn icon-btn" title="Bold (Ctrl+B)"><b>B</b></button>
+                    <button id="btn-italic" class="btn icon-btn" title="Italic (Ctrl+I)"><i style="font-family: serif;">I</i></button>
+                    <button id="btn-underline" class="btn icon-btn" title="Underline (Ctrl+U)"><u>U</u></button>
+                    <button id="btn-strikethrough" class="btn icon-btn" title="Strikethrough"><s>S</s></button>
+                </div>
+                <span class="separator"></span>
+                <div class="toolbar-group">
+                    <select id="style-dropdown" class="dropdown" title="Styles">
+                        <option value="p">Normal Text</option>
+                        <option value="h1">Title</option>
+                        <option value="h2">Subtitle</option>
+                        <option value="h3">Heading 1</option>
+                        <option value="h4">Heading 2</option>
+                        <option value="h5">Heading 3</option>
+                        <option value="h6">Heading 4</option>
+                    </select>
+                </div>
+                <span class="separator"></span>
+                <div class="toolbar-group">
+                    <button id="btn-align-left" class="btn icon-btn" title="Align Left">&#9776;</button>
+                    <button id="btn-align-center" class="btn icon-btn" title="Align Center">&#9776;</button>
+                    <button id="btn-align-right" class="btn icon-btn" title="Align Right">&#9776;</button>
+                    <button id="btn-align-justify" class="btn icon-btn" title="Justify">&#9776;</button>
+                </div>
+                <span class="separator"></span>
+                <div class="toolbar-group">
+                    <button id="btn-bullet" class="btn icon-btn" title="Bulleted List">&#8226;</button>
+                    <button id="btn-number" class="btn icon-btn" title="Numbered List">1.</button>
+                </div>
+                <div style="flex-grow: 1;"></div>
+                <div class="toolbar-group">
+                    <button id="btn-toggle-sidebar" class="btn icon-btn" title="Toggle LLex Assistant" style="width: auto; padding: 4px 10px;">LLex</button>
+                </div>
             </div>
         </header>
-
         <div id="main-content">
-            <div id="editor-container">
+            <div class="editor-scroll-container">
                 <div id="editor"></div>
             </div>
             
-            <aside id="sidebar">
-                <h3>LLM Assistant</h3>
+            <aside id="sidebar" style="display: flex; flex-direction: column;">
+                <h3>Document Outline</h3>
+                <div id="document-outline" style="flex-shrink: 0; max-height: 40%; overflow-y: auto; font-size: 13px; color: #aaa; margin-bottom: 20px;"></div>
+                
+                <h3>LLex Assistant</h3>
                 <button id="btn-summarize">Summarize Selection</button>
                 <button id="btn-rewrite">Rewrite Selection</button>
+                <button id="btn-execute-scaffolds" style="background:#5cb3ff; color:#0e2a47; font-weight:bold; margin-top:8px;">Execute Scaffolds</button>
                 <div style="flex-grow: 1;"></div>
-                <label>Ask Copilot:</label>
-                <textarea id="llm-prompt" placeholder="Ask LLM to edit or generate text..."></textarea>
+                <label>Ask LLex:</label>
+                <textarea id="llm-prompt" placeholder="Ask LLex to edit or generate text..."></textarea>
                 <button id="btn-ask">Submit Prompt</button>
             </aside>
         </div>
@@ -42,10 +145,116 @@
             Ready
         </footer>
     </div>
+
+    <!-- Context Menu (Mini Toolbar) -->
+    <div id="context-menu" class="mini-toolbar" style="display: none; position: absolute; z-index: 10000;">
+        <div class="mt-left-block">
+            <div class="mt-row">
+                <select class="mt-dropdown mt-font-family" data-action="font-family">
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Arial">Arial</option>
+                </select>
+                <select class="mt-dropdown mt-font-size" data-action="font-size">
+                    <option value="11pt">11</option>
+                    <option value="12pt" selected>12</option>
+                    <option value="14pt">14</option>
+                </select>
+                <button class="mt-btn mt-icon-btn" data-action="increase-font" title="Increase Font">A<span class="mt-sup">^</span></button>
+                <button class="mt-btn mt-icon-btn" data-action="decrease-font" title="Decrease Font">A<span class="mt-sup">v</span></button>
+                <button class="mt-btn mt-icon-btn" data-action="clear-format" title="Clear Formatting">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4b41a" stroke-width="2">
+                        <path d="M15 4 L20 9 L12 17 L7 12 Z M6 13 L3 20 H9" fill="#f4b41a"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="mt-row mt-bottom-row">
+                <button class="mt-btn mt-icon-btn mt-bold" data-action="bold">B</button>
+                <button class="mt-btn mt-icon-btn mt-italic" data-action="italic">I</button>
+                <button class="mt-btn mt-icon-btn mt-underline" data-action="underline">U</button>
+                <button class="mt-btn mt-icon-btn" data-action="highlight">
+                    <span class="mt-icon-text">🖍️</span><div class="mt-color-bar yellow"></div>
+                </button>
+                <button class="mt-btn mt-icon-btn" data-action="font-color">
+                    <span class="mt-icon-text">A</span><div class="mt-color-bar red"></div>
+                </button>
+                <button class="mt-btn mt-icon-btn" data-action="bullet-list">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5cb3ff">
+                        <circle cx="6" cy="7" r="1.5" fill="#5cb3ff"/><line x1="10" y1="7" x2="20" y2="7"/>
+                        <circle cx="6" cy="12" r="1.5" fill="#5cb3ff"/><line x1="10" y1="12" x2="20" y2="12"/>
+                        <circle cx="6" cy="17" r="1.5" fill="#5cb3ff"/><line x1="10" y1="17" x2="20" y2="17"/>
+                    </svg>
+                </button>
+                <button class="mt-btn mt-icon-btn" data-action="ordered-list">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5cb3ff">
+                        <text x="4" y="9" font-size="9" fill="#5cb3ff" stroke="none">1</text><line x1="10" y1="7" x2="20" y2="7"/>
+                        <text x="4" y="14" font-size="9" fill="#5cb3ff" stroke="none">2</text><line x1="10" y1="12" x2="20" y2="12"/>
+                        <text x="4" y="19" font-size="9" fill="#5cb3ff" stroke="none">3</text><line x1="10" y1="17" x2="20" y2="17"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <div class="mt-divider"></div>
+        
+        <div class="mt-right-block">
+            <button class="mt-btn mt-vertical-btn" data-action="styles" title="Styles">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <text x="4" y="20" font-size="18" fill="#e0e0e0" font-family="serif" stroke="none">A</text>
+                    <path d="M12 20 L22 6 L18 2 L8 16 Z" fill="#66b2ff" stroke="#66b2ff" stroke-width="1"/>
+                </svg>
+                <span class="mt-label">Styles</span>
+            </button>
+        </div>
+        
+        <div class="mt-divider"></div>
+
+        <div class="mt-right-block">
+            <button class="mt-btn mt-vertical-btn" data-action="add-scaffold" title="Add Scaffold">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e0e0e0" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="#5cb3ff" stroke-width="2"/>
+                    <path d="M8 7 L16 7 M8 12 L16 12 M8 17 L12 17" stroke="#e0e0e0" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <span class="mt-label">Scaffold</span>
+            </button>
+        </div>
+    </div>
     
-    <!-- Load TipTap -> Use UMD/ESM or CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@tiptap/core@2.0.3/dist/index.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tiptap/starter-kit@2.0.3/dist/index.umd.js"></script>
-    <script src="/static/editor.js"></script>
+    <!-- Standard Context Menu (Cut, Copy, Paste) -->
+    <div id="context-menu-standard" class="dropdown-menu" style="display: none; position: absolute; z-index: 10000; flex-direction: column;">
+        <div class="dropdown-item" data-action="cut">Cut</div>
+        <div class="dropdown-item" data-action="copy">Copy</div>
+        <div class="dropdown-item" data-action="paste">Paste</div>
+    </div>
+
+    <script src="/static/editor.bundle.js"></script>
+
 </body>
 </html>
+
+<!-- Settings Modal -->
+<div id="settings-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#2b2b2b; color:#fff; padding:20px; border-radius:8px; z-index:9999; box-shadow:0 0 15px rgba(0,0,0,0.5); font-size:14px; width: 350px;">
+    <h3 style="margin-top:0;">Settings</h3>
+    <hr style="border-color:#444; margin-bottom:15px;">
+    
+    <h4>Page Margins (inches)</h4>
+    <div style="display:flex; gap:10px; margin-bottom:15px;">
+        <label>Top <input type="number" id="margin-top" value="1" step="0.1" style="width:40px;"></label>
+        <label>Right <input type="number" id="margin-right" value="1" step="0.1" style="width:40px;"></label>
+        <label>Bottom <input type="number" id="margin-bottom" value="1" step="0.1" style="width:40px;"></label>
+        <label>Left <input type="number" id="margin-left" value="1" step="0.1" style="width:40px;"></label>
+    </div>
+    
+    <h4>Theme Colors</h4>
+    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:20px;">
+        <label style="display:flex; justify-content:space-between;">App Background: <input type="color" id="theme-bg" value="#1e1e1e"></label>
+        <label style="display:flex; justify-content:space-between;">Paper Background: <input type="color" id="theme-paper" value="#ffffff"></label>
+        <label style="display:flex; justify-content:space-between;">Text Color: <input type="color" id="theme-text" value="#000000"></label>
+        <label style="display:flex; justify-content:space-between;">Ribbon Background: <input type="color" id="theme-ribbon" value="#2b2b2b"></label>
+        <label style="display:flex; justify-content:space-between;">Border Color: <input type="color" id="theme-border" value="#444444"></label>
+    </div>
+    
+    <div style="display:flex; justify-content:flex-end; gap:10px;">
+        <button id="btn-settings-cancel" class="btn text-btn">Cancel</button>
+        <button id="btn-settings-save" class="btn btn-primary text-btn">Save</button>
+    </div>
+</div>

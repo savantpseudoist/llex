@@ -27,6 +27,7 @@ class Document:
         self.created_at = datetime.utcnow()
         self.modified_at = self.created_at
         self.paragraphs: List[str] = [""]
+        self.html_content: str = "<p>Start typing your document...</p>"
         self.styles: Dict[str, StyleDefinition] = self._default_styles()
         self.page_size = (8.5, 11.0)
         self.margins = (0.75, 0.75, 0.75, 0.75)

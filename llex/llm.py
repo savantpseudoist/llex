@@ -36,6 +36,12 @@ class LocalLLMBridge:
         sampled = random.choice(lines) if lines else core
         return f"[{tone_keyword} tone] {sampled} ... {cue}"
 
+    def execute_instruction(self, text: str, instruction: str) -> str:
+        """Simulate generating content for a given text based on a scaffold instruction."""
+        if not text.strip():
+            return f"[AI Generated for: '{instruction}']"
+        return f"[AI Executed: '{instruction}'] -> {text.strip()}"
+
     def outline(self, text: str) -> str:
         """Simulate outlining by enumerating the leading sentences."""
         sentences = self._split_sentences(text)
