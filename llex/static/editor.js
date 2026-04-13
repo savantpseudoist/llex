@@ -147,8 +147,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    const menuOpen = document.getElementById('menu-open');
     const menuSave = document.getElementById('menu-save');
     const menuSaveAs = document.getElementById('menu-save-as');
+
+    // Open
+    if(menuOpen) menuOpen.addEventListener('click', async () => {
+        try {
+            const response = await fetch('/api/open', {
+                method: 'GET'
+            });
+            const data = await response.json();
+            if(data.status === 'opened') {
+                editor.commands.setContent(data.html);
+            } else if(data.status === 'error') {
+                console.error("Error opening document:", data.message);
+                alert("Error opening file: " + data.message);
+            }
+        } catch(err) {
+            console.error("Open failed:", err);
+            alert("Open failed: " + err.message);
+        }
+    });
 
     // Save
     if(menuSave) menuSave.addEventListener('click', async () => {

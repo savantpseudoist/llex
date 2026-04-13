@@ -39,6 +39,32 @@ def load_document():
         return {"html": active_document.html_content}
     return {"html": ""}
 
+@app.get("/api/open")
+def open_document():
+    global active_document
+    try:
+        window = webview.windows[0]
+        try:
+            dialog_type = webview.OPEN_DIALOG
+        except AttributeError:
+            dialog_type = 10 # Fallback integer for open dialog
+        
+        result = window.create_file_dialog(
+            dialog_type,
+            file_types=('LLex Document (*.llex)', 'All files (*.*)')
+        )
+        if result and len(result) > 0:
+            target_path = result[0]
+            from .document import Document
+            from pathlib import Path
+            active_document = Document.load(target_path)
+            active_document.path = Path(target_path)
+            window.set_title(f"{active_document.path.name} - LLex")
+            return {"status": "opened", "html": active_document.html_content, "title": active_document.title}
+        return {"status": "cancelled"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 @app.post("/api/save")
 def save_document(payload: SavePayload):
     global active_document

@@ -82,6 +82,7 @@ class Document:
             "created_at": self.created_at.isoformat(),
             "modified_at": self.modified_at.isoformat(),
             "paragraphs": self.paragraphs,
+            "html_content": self.html_content,
             "styles": {name: asdict(style) for name, style in self.styles.items()},
             "page_size": self.page_size,
             "margins": self.margins,
@@ -101,6 +102,7 @@ class Document:
         with target.open("r", encoding="utf-8") as reader:
             payload = json.load(reader)
         document = cls(title=payload.get("title", "Untitled Document"))
+        document.html_content = payload.get("html_content", "")
         document.created_at = datetime.fromisoformat(payload.get("created_at", document.created_at.isoformat()))
         document.modified_at = datetime.fromisoformat(payload.get("modified_at", document.modified_at.isoformat()))
         document.paragraphs = payload.get("paragraphs", [""])
