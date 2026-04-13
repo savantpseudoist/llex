@@ -46,6 +46,10 @@
         <header id="ribbon">
             <div class="toolbar">
                 <div class="toolbar-group">
+                    <button id="btn-toggle-outline" class="btn icon-btn" title="Toggle Document Outline" style="width: auto; padding: 4px 10px;">Outline</button>
+                </div>
+                <span class="separator"></span>
+                <div class="toolbar-group">
                     <button id="btn-undo" class="btn icon-btn" title="Undo (Ctrl+Z)">&#x21B6;</button>
                     <button id="btn-redo" class="btn icon-btn" title="Redo (Ctrl+Y)">&#x21B7;</button>
                 </div>
@@ -122,14 +126,15 @@
             </div>
         </header>
         <div id="main-content">
+            <aside id="left-sidebar" style="display: flex; flex-direction: column;">
+                <h3>Document Outline</h3>
+                <div id="document-outline" style="flex: 1; overflow-y: auto; font-size: 13px; color: #aaa;"></div>
+            </aside>
             <div class="editor-scroll-container">
                 <div id="editor"></div>
             </div>
             
             <aside id="sidebar" style="display: flex; flex-direction: column;">
-                <h3>Document Outline</h3>
-                <div id="document-outline" style="flex-shrink: 0; max-height: 40%; overflow-y: auto; font-size: 13px; color: #aaa; margin-bottom: 20px;"></div>
-                
                 <h3>LLex Assistant</h3>
                 <button id="btn-summarize">Summarize Selection</button>
                 <button id="btn-rewrite">Rewrite Selection</button>

@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if(btnBullet) btnBullet.addEventListener('click', () => editor.chain().focus().toggleBulletList().run());
     if(btnNumber) btnNumber.addEventListener('click', () => editor.chain().focus().toggleOrderedList().run());
 
-    // Sidebar Toggle
+    // Sidebars Toggle
     const btnToggleSidebar = document.getElementById('btn-toggle-sidebar');
     const sidebar = document.getElementById('sidebar');
     if(btnToggleSidebar && sidebar) {
@@ -255,6 +255,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                 btnToggleSidebar.classList.add('active');
             } else {
                 btnToggleSidebar.classList.remove('active');
+            }
+        });
+    }
+
+    const btnToggleOutline = document.getElementById('btn-toggle-outline');
+    const leftSidebar = document.getElementById('left-sidebar');
+    if(btnToggleOutline && leftSidebar) {
+        btnToggleOutline.addEventListener('click', () => {
+            leftSidebar.classList.toggle('open');
+            if (leftSidebar.classList.contains('open')) {
+                btnToggleOutline.classList.add('active');
+            } else {
+                btnToggleOutline.classList.remove('active');
             }
         });
     }

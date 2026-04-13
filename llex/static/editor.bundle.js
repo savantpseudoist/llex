@@ -22785,6 +22785,18 @@ ${nextLine.slice(indentLevel + 2)}`;
         }
       });
     }
+    const btnToggleOutline = document.getElementById("btn-toggle-outline");
+    const leftSidebar = document.getElementById("left-sidebar");
+    if (btnToggleOutline && leftSidebar) {
+      btnToggleOutline.addEventListener("click", () => {
+        leftSidebar.classList.toggle("open");
+        if (leftSidebar.classList.contains("open")) {
+          btnToggleOutline.classList.add("active");
+        } else {
+          btnToggleOutline.classList.remove("active");
+        }
+      });
+    }
     const contextMenu = document.getElementById("context-menu");
     const contextMenuStandard = document.getElementById("context-menu-standard");
     const editorContainer = document.querySelector(".tiptap") || document.querySelector("#editor");

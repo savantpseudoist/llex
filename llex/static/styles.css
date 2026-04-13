@@ -275,12 +275,11 @@ body, html {
     body { background: none; }
 }
 
-/* Sidebar */
-#sidebar {
+/* Sidebars */
+#sidebar, #left-sidebar {
     width: 0;
     overflow: hidden;
     background-color: #252526;
-    border-left: none;
     color: #ccc;
     padding: 0;
     display: flex;
@@ -289,13 +288,22 @@ body, html {
     transition: width 0.3s ease, padding 0.3s ease;
 }
 
+#sidebar { border-left: none; }
+#left-sidebar { border-right: none; }
+
 #sidebar.open {
     width: 280px;
     padding: 16px;
     border-left: 1px solid var(--border-color);
 }
 
-#sidebar h3 { margin-top: 0; color: white; white-space: nowrap; }
+#left-sidebar.open {
+    width: 250px;
+    padding: 16px;
+    border-right: 1px solid var(--border-color);
+}
+
+#sidebar h3, #left-sidebar h3 { margin-top: 0; color: white; white-space: nowrap; }
 
 #sidebar button {
     background: #3a3d41;
