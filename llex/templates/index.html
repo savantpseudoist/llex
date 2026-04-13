@@ -46,10 +46,6 @@
         <header id="ribbon">
             <div class="toolbar">
                 <div class="toolbar-group">
-                    <button id="btn-toggle-outline" class="btn icon-btn" title="Toggle Document Outline" style="width: auto; padding: 4px 10px;">Outline</button>
-                </div>
-                <span class="separator"></span>
-                <div class="toolbar-group">
                     <button id="btn-undo" class="btn icon-btn" title="Undo (Ctrl+Z)">&#x21B6;</button>
                     <button id="btn-redo" class="btn icon-btn" title="Redo (Ctrl+Y)">&#x21B7;</button>
                 </div>
@@ -125,9 +121,10 @@
                 </div>
             </div>
         </header>
-        <div id="main-content">
-            <aside id="left-sidebar" style="display: flex; flex-direction: column;">
-                <h3>Document Outline</h3>
+        <div id="main-content" style="position: relative;">
+            <button id="btn-toggle-outline" class="btn-floating-outline" title="Toggle Document Outline">&#9776; Outline</button>
+            <aside id="left-sidebar" style="display: flex; flex-direction: column; padding-top: 50px;">
+                <h3 style="margin-bottom: 10px;">Document Outline</h3>
                 <div id="document-outline" style="flex: 1; overflow-y: auto; font-size: 13px; color: #aaa;"></div>
             </aside>
             <div class="editor-scroll-container">

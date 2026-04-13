@@ -315,6 +315,30 @@ body, html {
     white-space: nowrap;
 }
 #sidebar button:hover { background: #505357; }
+
+/* Floating Outline Button */
+.btn-floating-outline {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 100;
+    background: #3c3f41;
+    color: #ccc;
+    border: 1px solid #555;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-floating-outline:hover {
+    background: #505357;
+}
+
+#left-sidebar.open ~ .btn-floating-outline {
+    /* Optional: hide or move the button when the sidebar is open, lets just keep it here to close it back */
+}
 #btn-ask { background: #0e639c !important; }
 
 #sidebar textarea {
