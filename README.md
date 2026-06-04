@@ -33,3 +33,9 @@ LLex expects a local inference engine in the future. For now, `LocalLLMBridge` s
 - `llex.ui` wires Tkinter widgets, formatting tags, and command menus with the document model plus the LLM bridge.
 - `llex.llm` isolates the language-model contract; replacing it with Hugging Face inference or a local server only requires implementing the same methods.
 - `dev_docs/software_engineering_journal.md` captures the rationale for this iteration and should be updated as the project evolves.
+
+## Contributing
+
+- Start here: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Community rules: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- Security reporting: [SECURITY.md](SECURITY.md)
